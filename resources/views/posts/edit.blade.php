@@ -1,6 +1,12 @@
 @extends('main')
 
 @section('title', '| Edit Blog Post')
+@section('stylesheets')
+
+	{!! Html::style('css/select2.min.css') !!}
+
+
+@endsection
 
 @section('content')
 
@@ -17,6 +23,17 @@
 
 					{{ Form::label('category_id', 'Category:')}}
 					{{ Form::select('category_id', $categories, null, ['class' => 'form-control'])}}
+{{--
+					{{Form::label('tags', 'Tags:')}}
+
+					 <select class="form-control select2-multi" name="tags[]" multiple="multiple">
+						@foreach($tags as $tag)
+							<option value="{{ $tag->id }}"> {{$tag->name}}</option>
+						@endforeach
+					</select> --}}
+					{{ Form::label('tags' , 'Tags:', ['class' => 'form-margin-top']) }}
+					{{ Form::select('tags[]', $tags, null, ['class' => 'select2-multi form-control' , 'multiple' => 'multiple']) }}
+
 
 
 
@@ -59,3 +76,15 @@
 	
 
 @stop
+
+@section('scripts')
+{!! Html::script('js/select2.min.js') !!}
+<script>
+	$('.select2-multi').select2();
+	$('.select2-multi').select2().val({!! json_encode($post->tags()->allRelatedIds() ) !!}).trigger('change');
+
+
+</script>
+
+
+@endsection

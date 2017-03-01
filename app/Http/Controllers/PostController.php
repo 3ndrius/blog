@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
 use Session;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -25,6 +26,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id','desc')->paginate(4);
+      
 
         return view('posts.index')->withPosts($posts);  
     }
@@ -37,7 +39,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('posts.create')->withCategories($categories);
+
+        $tags = Tag::all();
+        return view('posts.create')->withCategories($categories)->withTags($tags);
     }
 
     /**
@@ -48,6 +52,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, array(
 
             'title'          => 'required|unique:posts|max:255',
@@ -63,8 +68,9 @@ class PostController extends Controller
        $post->category_id = $request->category_id;
        $post->body = $request->body;
        
-
         $post->save();
+
+        $post->tags()->sync($request->tags, false);
 
 
         Session::flash('success', 'The blog post was successfuly save!');
@@ -102,9 +108,15 @@ class PostController extends Controller
             $cats[$category->id] = $category->name;
         }
 
+        $tags = Tag::all();
+        $tags2 = array();
+        foreach ($tags as $tag) {
+            $tags2[$tag->id] = $tag->name;
+        }
+
 
         
-        return view('posts.edit')->withPost($post)->withCategories($cats);
+        return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tags2);
     }
 
     /**
@@ -145,6 +157,18 @@ class PostController extends Controller
         $post->body = $request->input('body');
 
         $post->save();
+
+        if (isset($request->tags)) {
+
+            $post->tags()->sync($request->tags);
+
+        } else {
+            
+            $post->tags()->sync(array());
+        }
+        
+
+        
 
         //set flash data whit message success
         Session::flash('success', 'This post was successfuly saved.');

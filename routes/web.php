@@ -31,9 +31,14 @@ Route::resource('posts', 'PostController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::resource('tags', 'TagController', ['except' => ['create']]);
+
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::resource('categories', 'CategoryController', ['except' => ['create']]);
+
+
 
 
 
