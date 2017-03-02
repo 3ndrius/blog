@@ -27,6 +27,9 @@ Route::get('/', 'PagesController@getIndex');
 
 Route::resource('posts', 'PostController');
 
+// Route::resource('comments', 'CommentsController'['except' =>['create']]);
+
+Route::post('comments/{post_id}', ['uses' => 'CommentsController@store', 'as' => 'comments.store']);
 
 Auth::routes();
 
