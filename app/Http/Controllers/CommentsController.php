@@ -80,7 +80,10 @@ class CommentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        
+        $comment = Comment::find($id);
+
+        return view('comments.edit')->withComment($comment);
     }
 
     /**
@@ -92,7 +95,19 @@ class CommentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $comment = Comment::find($id);
+
+        $this->validate($request, [
+
+            'comment' => 'required|min:5|max:2500'
+        ]);
+
+        $comment->comment = $request->comment;
+        $comment->save();
+
+        Session::flash('success', 'Save susscessfully comment');
+
+        return redirect()->route('posts.show', $comment->post->id);
     }
 
     /**
@@ -100,9 +115,31 @@ class CommentsController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+
+
      */
-    public function destroy($id)
-    {
-        //
+
+    public function delete($id) {
+
+
+          
+        $comment = Comment::find($id);
+
+        return view('comments.delete')->withComment($comment);
+
+    }
+
+    public function destroy($id) {
+  
+    
+        $comment = Comment::find($id);
+
+        $post_id = $comment->post->id;
+
+        $comment->delete();
+
+        Session::flash('success', 'Comments was successfuly deleted');
+
+        return redirect()->route('posts.show', $post_id );
     }
 }

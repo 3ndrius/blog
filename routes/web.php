@@ -31,13 +31,30 @@ Route::resource('posts', 'PostController');
 
 Route::post('comments/{post_id}', ['uses' => 'CommentsController@store', 'as' => 'comments.store']);
 
+Route::get('comments/{id}/edit', ['uses' => 'CommentsController@edit', 'as' => 'comments.edit']);
+
+Route::put('comments/{id}', ['uses' => 'CommentsController@update', 'as' => 'comments.update']);
+
+Route::delete('comments/{id}', ['uses' => 'CommentsController@destroy', 'as' => 'comments.destroy']);
+
+Route::get('comments/{id}/delete', ['uses' => 'CommentsController@delete', 'as' => 'comments.delete']);
+
+
+
+
+
+
+
 Auth::routes();
+
 
 Route::get('/home', 'HomeController@index');
 
 Route::resource('tags', 'TagController', ['except' => ['create']]);
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
+
 
 Route::resource('categories', 'CategoryController', ['except' => ['create']]);
 

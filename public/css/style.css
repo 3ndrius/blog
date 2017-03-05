@@ -4,3 +4,62 @@
 .form-spacing-top{
 	margin-top: 20px;
 }
+
+.media{
+	width: 100%;
+}
+.img-avatar{
+	height: 60px;
+	width: 60px;
+	border-radius: 50%;
+	float:left;
+}
+.comment-body{
+	width:80%;
+	height: 100%;
+	float:left;
+}
+.comment-head{
+	margin-top:0;
+	margin-left:20px;
+	margin-bottom: 5px;
+	
+}
+.comment-date{
+	margin-left: 20px;
+	margin-top: 0px;
+	font-weight: 100;
+	font-style: italic;
+	color:#949191;
+}
+.comment-content{
+	margin-left:10px;	
+
+
+
+}
+.clear{
+	clear:both;
+}
+.comment-title{
+	margin-bottom: 50px;
+
+}
+.table-comment td{
+	border-bottom:1px solid black;
+	padding:10px 5px 10px 5px;
+
+}
+.del{
+	color:#d9534f;
+}
+.login-icon{
+	padding:0;
+}
+.buton{
+	margin-top:20px;
+	background-color:white;
+	border-color:#45abb2;
+	color:#45abb2;
+}
+

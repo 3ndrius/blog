@@ -4,22 +4,50 @@
 
 @section('content')
 
-
-	
-		
-		<div class="row">
-			<div class="col-md-8">
+<div class="row">
+			<div class="col-md-9">
 				<h1>{{ $post->title }}</h1>
 				<p class ="lead">{{ $post->body }}</p>
 				<hr>
 				<div class="tag">
-				@foreach($post->tags as $tag)
-					<span class="label label-default "> {{ $tag->name}}</span>
+					@foreach($post->tags as $tag)
+						<span class="label label-default "> {{ $tag->name}}</span>
 
-				@endforeach
+					@endforeach
 				</div>
+
+				<div class="backend-comment" >
+					<h3>Comments <small>{{ $post->comments()->count() }} total </small></h3>
+					<hr>
+					<table class="table-comment">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Comment</th>
+								<th></th>
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							@foreach($post->comments as $comment)
+								<tr>
+									<td>{{$comment->name}}</td>
+									<td>{{$comment->email}}</td>
+									<td>{{$comment->comment}}</td>
+									<td> <a href="{{ route('comments.edit', $comment->id) }}"> <i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i></a></td>
+									<td> <a href="{{ route('comments.delete', $comment->id) }}"><i class="fa fa-trash fa-2x del" aria-hidden="true"></i> </a></td>
+								</tr>
+
+							@endforeach
+						</tbody>
+					</table>
+				 </div>
+
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<div class="well">
 
 					<dl >

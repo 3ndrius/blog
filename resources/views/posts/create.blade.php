@@ -2,15 +2,18 @@
 
 @section('title', '| Create New Post')
 
-@section('content')
+
 
 @section('stylesheets')
-{!! Html::style('css/parsley.css') !!}
-{!! Html::style('css/select2.min.css') !!}
+	{!! Html::style('css/parsley.css') !!}
+	{!! Html::style('css/select2.min.css') !!}
+	<script src="//cloud.tinymce.com/stable/tinymce.min.js"></script>
+
+	  <script>tinymce.init({ selector:'textarea', menubar:'false' });</script>
 
 
 @endsection
-
+@section('content')
 	
 	<div class="row">
 		
@@ -24,7 +27,7 @@
 
 
     			{{ Form:: label('body', 'Post Body:') }}
-    			{{ Form:: textarea('body', null, array('class' => 'form-control','required' => '')) }}
+    			{{ Form:: textarea('body', null, array('class' => 'form-control')) }}
 
 				{{Form::label('category_id', 'Category:')}}
 
