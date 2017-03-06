@@ -5,10 +5,10 @@
 
 @section('content')
 
-	
+
 	<div class="container">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-10">
 			<h1>Blog</h1>
 		</div>
 
@@ -17,7 +17,7 @@
 		@foreach($posts as $post)
 			<div class="row">
 
-				<div class="col-md-8 col-md-offset-2">
+				<div class="col-md-10 ">
 
 				<h2>{{ $post->title }}</h2>
 				<h5>Published at: {{ date('M j, Y', strtotime($post->created_at)) }}</h5>
@@ -27,10 +27,12 @@
 				<a href="{{ route('blog.single', $post->slug) }}" class="btn btn-primary"> Read more</a>
 
 				<hr>
-					
+
 				</div>
 
 			</div>
+
+
 
 		@endforeach
 

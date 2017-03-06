@@ -1,3 +1,21 @@
+body{
+	background-image: url('/images/crossword.png');
+
+}
+.jumbotron{
+	background: inherit
+
+
+}
+.navbar-default{
+	background-color: inherit;
+	border-color: none;
+}
+
+.navbar-default .navbar-nav>li>a{
+	color:#45abb2;
+}
+
 .btn-h1-margin{
 	margin-top:15px;
 }
@@ -23,7 +41,7 @@
 	margin-top:0;
 	margin-left:20px;
 	margin-bottom: 5px;
-	
+
 }
 .comment-date{
 	margin-left: 20px;
@@ -33,7 +51,7 @@
 	color:#949191;
 }
 .comment-content{
-	margin-left:10px;	
+	margin-left:10px;
 
 
 
@@ -62,4 +80,3 @@
 	border-color:#45abb2;
 	color:#45abb2;
 }
-

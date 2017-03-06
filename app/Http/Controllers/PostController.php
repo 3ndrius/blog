@@ -7,7 +7,9 @@ use App\Post;
 use App\Category;
 use Session;
 use App\Tag;
-
+use Purifier;
+use Image;
+use Storage;
 class PostController extends Controller
 {
 
@@ -26,9 +28,9 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id','desc')->paginate(4);
-      
 
-        return view('posts.index')->withPosts($posts);  
+
+        return view('posts.index')->withPosts($posts);
     }
 
     /**
@@ -58,16 +60,29 @@ class PostController extends Controller
             'title'          => 'required|unique:posts|max:255',
             'slug'           => 'required|alpha_dash|max:255|unique:posts,slug',
             'category_id'    => 'required|integer',
-            'body'           => 'required'
-            
+            'body'           => 'required',
+            'featured_image' => 'sometimes|image'
+
         ));
        $post = new Post;
-       
+
        $post->title = $request->title;
        $post->slug = $request->slug;
        $post->category_id = $request->category_id;
        $post->body = $request->body;
-       
+
+       // save Image
+
+        if($request->hasFile('featured_image')) {
+
+          $image = $request->file('featured_image');
+          $filename = time() . '.'.$image->getClientOriginalExtension();
+          $location = public_path('images/'. $filename);
+          Image::make($image)->resize(800,400)->save($location);
+          $post->image = $filename;
+        }
+
+
         $post->save();
 
         $post->tags()->sync($request->tags, false);
@@ -75,7 +90,7 @@ class PostController extends Controller
 
         Session::flash('success', 'The blog post was successfuly save!');
 
-       return redirect()->route('posts.show', $post->id); 
+       return redirect()->route('posts.show', $post->id);
     }
 
     /**
@@ -115,7 +130,7 @@ class PostController extends Controller
         }
 
 
-        
+
         return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tags2);
     }
 
@@ -130,31 +145,37 @@ class PostController extends Controller
     {
         $post = Post::find($id);
 
-        if($request->input('slug') == $post->slug){
-
-             $this->validate($request, array(
-                'title' => 'required|max:255',
-                'category_id' => 'required|integer',
-                'body' => 'required'
-            ));
-        }
-        else{
             $this->validate($request, array(
                 'title' => 'required|max:255',
-                'slug' => 'required|max:255|unique:posts,slug',
+                'slug' => "required|alpha_dash|max:255|unique:posts,slug,$id",
                 'category_id' =>'required|integer',
-                'body' => 'required'
+                'body' => 'required',
+                'featured_image' => 'image'
             ));
 
-               
-        }
+
+
 
         $post = Post::find($id);
 
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
         $post->category_id = $request->input('category_id');
-        $post->body = $request->input('body');
+        $post->body = Purifier::clean($request->input('body'));
+
+
+        if ($request->hasFile('featured_image')) {
+
+          $image = $request->file('featured_image');
+          $filename = time() . '.'.$image->getClientOriginalExtension();
+          $location = public_path('images/'. $filename);
+          Image::make($image)->resize(800,400)->save($location);
+
+          $oldFilename = $post->image;
+          $post->image = $filename;
+
+          Storage::delete($oldFilename);
+        }
 
         $post->save();
 
@@ -163,12 +184,12 @@ class PostController extends Controller
             $post->tags()->sync($request->tags);
 
         } else {
-            
+
             $post->tags()->sync(array());
         }
-        
 
-        
+
+
 
         //set flash data whit message success
         Session::flash('success', 'This post was successfuly saved.');
@@ -188,6 +209,8 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $post->tags()->detach();
+
+        Storage::delete($post->image);
 
         $post->delete();
 

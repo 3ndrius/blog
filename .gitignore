@@ -9,5 +9,4 @@ Homestead.yaml
 .env
 .env.*.php
 .env.php
-
-
+/public/images

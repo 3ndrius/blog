@@ -2,7 +2,7 @@
 <html lang="en">
 
   <head>
-    
+
       @include('partials._head')
 
   </head>
@@ -14,10 +14,10 @@
 
 
       <div class="container">
-      
+
 
         @include('partials._messages')
-       
+
 
           @yield('content')
 
@@ -32,6 +32,6 @@
   @yield('scripts')
 
   </body>
-  
-  
+
+
 </html>
