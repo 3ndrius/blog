@@ -1,3 +1,16 @@
+# Laravel Blog App
+
+#EX 
+
+Blog using laravel framework 
+ - full dahboard protected view 
+ - full post, category, tags view
+ - full crud post
+ - full crud comment
+ - full crud tags 
+ - full crud category 
+
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
